@@ -31,18 +31,10 @@ Le tout doit être déployé automatiquement via Terraform et configuré via Ans
 
 Tout d'abord, cloner ce dépôt, puis exécuter le script pour installer et déployer automatiquement :
 
-```bash
+````bash
 git clone https://github.com/NicolasOsborne/TP_Docker-Terraform-Ansible.git
-
 cd TP_Docker-Terraform-Ansible
-
-./deploy.sh
-```
-
-Si l'exécution du script `deploy.sh` échoue pour des raisons de droits, exécuter la commande suivante après avoir cloné le dépôt :
-
-```bash
 chmod +x deploy.sh
-
-./deploy.sh
-```
+sudo ./deploy.sh
+```terra
+````
