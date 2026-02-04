@@ -1,12 +1,12 @@
 echo "--- DEPLOYMENT START ---"
 
 echo "--- TERRAFORM INIT ---"
-cd terraform
+cd terraform || exit
 terraform init
 terraform apply -auto-approve
 
 echo "--- ANSIBLE DEPLOY ---"
-cd ../ansible
+cd ../ansible || exit
 ansible-playbook -i inventory.ini playbook.yml
 
 echo "--- DEPLOYMENT DONE ---"

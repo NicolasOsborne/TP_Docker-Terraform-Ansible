@@ -77,14 +77,12 @@ sudo ./bootstrap.sh
 Puis, vous pourrez lancer le script de déploiement automatique :
 
 ```bash
-chmod +x deploy.sh
-sudo ./deploy.sh
+./deploy.sh
 ```
 
 **J'ai déjà Docker, Terraform et Ansible d'installés :**
 Il vous suffit alors de simplement lancer le script de déploiement de la stack :
 
 ```bash
-chmod +x deploy.sh
-sudo ./deploy.sh
+./deploy.sh
 ```
