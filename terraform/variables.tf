@@ -19,5 +19,5 @@ variable "filename" {
 variable "inventory_path" {
    description = "Relative path for the Ansible inventory file"
    type        = string
-   default     = "../ansible/inventory"
+   default     = "../ansible/inventory.ini"
 }
