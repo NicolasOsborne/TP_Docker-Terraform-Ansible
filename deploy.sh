@@ -1,13 +1,13 @@
 echo "--- DEPLOYMENT START ---"
 
 echo "--- TERRAFORM INIT ---"
-cd terraform || exit
+cd terraform
 terraform init
 terraform apply -auto-approve
 
 echo "--- ANSIBLE DEPLOY ---"
-cd ../ansible || exit
+cd ../ansible
 ansible-playbook -i inventory.ini playbook.yml
 
 echo "--- DEPLOYMENT DONE ---"
-echo "Check services with: docker service ls"
+docker service ls || echo "Docker services check failed, make sure Docker is running and user is in docker group."
