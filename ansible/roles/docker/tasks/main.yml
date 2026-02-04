@@ -1,12 +1,3 @@
-- name: Update apt cache
-  apt:
-    update_cache: yes
-
-- name: Install required packages
-  apt:
-    name: docker.io
-    state: present
-
 - name: Start and enable Docker
   service:
     name: docker
