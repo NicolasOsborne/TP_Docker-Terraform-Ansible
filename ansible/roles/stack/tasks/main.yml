@@ -1,0 +1,15 @@
+- name: Create Docker secrets - DB password
+  shell: echo "glpi" | docker secret create db_password -
+  ignore_errors: yes
+
+- name: Create Docker secrets - Root DB password
+  shell: echo "root" | docker secret create db_root_password -
+  ignore_errors: yes
+
+- name: Copy Docker stack file
+  copy:
+    src: ../../docker/docker-stack.yml
+    dest: /home/{{ ansible_user }}/docker-stack.yml
+
+- name: Deploy stack
+  command: docker stack deploy -c docker-stack.yml tp_devops
