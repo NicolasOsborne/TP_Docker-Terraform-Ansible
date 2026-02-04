@@ -40,8 +40,9 @@ services:
 
   glpi:
     image: glpi/glpi:latest
-    restart_policy:
-      condition: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
     environment:
       - TIMEZONE=Europe/Paris
       - GLPI_DB_HOST=db

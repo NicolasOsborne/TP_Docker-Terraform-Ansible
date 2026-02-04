@@ -1,7 +1,6 @@
 - name: Configure Docker Swarm and deploy stack
   hosts: manager
   become: true
-  beccome_method: sudo
 
   roles:
     - docker
