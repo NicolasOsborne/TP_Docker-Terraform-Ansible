@@ -1,13 +1,19 @@
 - name: Copy Docker stack file
   copy:
-    src: ../docker/docker-stack.yml
+    src: '{{ playbook_dir }}/../docker/docker-stack.yml'
     dest: /tmp/docker-stack.yml
 
 - name: Copy Nginx configuration file for Docker Swarm
   copy:
-    src: ../../docker/nginx/conf.d/default.conf
+    src: '{{ playbook_dir }}/../docker/nginx/conf.d/default.conf'
     dest: /tmp/docker/nginx/conf.d/default.conf
     force: yes
+
+- name: Create directory for Nginx config on manager
+  file:
+    path: /tmp/docker/nginx/conf.d
+    state: directory
+    mode: '0755'
 
 - name: Create Docker secrets - DB password
   shell: echo "glpi" | docker secret create db_password -
