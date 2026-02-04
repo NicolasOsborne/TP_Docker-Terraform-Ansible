@@ -91,4 +91,4 @@ secrets:
 
 configs:
   nginx_conf:
-    file: ./docker/nginx/conf.d/default.conf
+    file: /tmp/docker/nginx/conf.d/default.conf
