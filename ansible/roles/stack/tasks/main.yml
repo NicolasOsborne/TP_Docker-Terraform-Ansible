@@ -8,7 +8,7 @@
 
 - name: Copy Docker stack file
   copy:
-    src: ../../docker/docker-stack.yml
+    src: ../docker/docker-stack.yml
     dest: /tmp/docker-stack.yml
 
 - name: Deploy stack
