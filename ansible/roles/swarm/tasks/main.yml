@@ -1,8 +1,9 @@
 - name: Check if Docker Swarm is already initialized
-  command: docker info --format '{{.Swarm.LocalNodeState}}'
+  command: >
+    docker info --format '{{ "{{.Swarm.LocalNodeState}}" }}'
   register: swarm_state
   changed_when: false
 
 - name: Initialize Docker Swarm
   command: docker swarm init --advertise-addr {{ ansible_facts['default_ipv4']['address'] }}
-  ignore_errors: yes
+  when: swarm_state.stdout != "active"
