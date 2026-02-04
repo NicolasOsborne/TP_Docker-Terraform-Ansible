@@ -9,7 +9,7 @@
 - name: Copy Docker stack file
   copy:
     src: ../../docker/docker-stack.yml
-    dest: /home/{{ ansible_user }}/docker-stack.yml
+    dest: /tmp/docker-stack.yml
 
 - name: Deploy stack
-  command: docker stack deploy -c docker-stack.yml tp_devops
+  command: docker stack deploy -c /tmp/docker-stack.yml tp_devops

@@ -56,7 +56,6 @@ terraform --version
 
 ```bash
 ansible --version
-which ansible
 ```
 
 Selon votre situation, vous avez deux options différentes :
