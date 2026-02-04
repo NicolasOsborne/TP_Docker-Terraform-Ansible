@@ -23,7 +23,26 @@ Le tout doit être déployé automatiquement via Terraform et configuré via Ans
 - Terraform
 - Ansible
 - Ngnix Reverse Proxy
+- GLPI
 - Let's Encrypt
 - Maria DB
 
-## Scripts pour le déploiement :
+## Mise en place et déploiement automatisé :
+
+Tout d'abord, cloner ce dépôt, puis exécuter le script pour installer et déployer automatiquement :
+
+```bash
+git clone https://github.com/NicolasOsborne/TP_Docker-Terraform-Ansible.git
+
+cd TP_Docker-Terraform-Ansible
+
+./deploy.sh
+```
+
+Si l'exécution du script `deploy.sh` échoue pour des raisons de droits, exécuter la commande suivante après avoir cloné le dépôt :
+
+```bash
+chmod +x deploy.sh
+
+./deploy.sh
+```
