@@ -17,11 +17,13 @@
 
 - name: Create Docker secrets - DB password
   shell: echo "glpi" | docker secret create db_password -
-  ignore_errors: yes
+  failed_when: false
+  changed_when: false
 
 - name: Create Docker secrets - Root DB password
   shell: echo "root" | docker secret create db_root_password -
-  ignore_errors: yes
+  failed_when: false
+  changed_when: false
 
 - name: Deploy stack
   command: docker stack deploy -c /tmp/docker-stack.yml tp_devops

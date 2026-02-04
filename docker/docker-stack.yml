@@ -18,6 +18,14 @@ services:
     depends_on:
       - certgen
       - glpi
+    command: >
+      sh -c "
+      while [ ! -f /etc/nginx/certs/nginx.crt ]; do
+        echo 'Waiting for certificate...';
+        sleep 2;
+      done;
+      nginx -g 'daemon off;'
+      "
     networks:
       - glpi-network
 
@@ -27,11 +35,16 @@ services:
       sh -c "
       apk add --no-cache openssl &&
       mkdir -p /certs &&
-      openssl req -x509 -nodes -days 365 \
-        -newkey rsa:2048 \
-        -keyout /certs/nginx.key \
-        -out /certs/nginx.crt \
-        -subj '/CN=glpi.local'
+      if [ ! -f /certs/nginx.crt ]; then
+        echo 'Generating certificate...';
+        openssl req -x509 -nodes -days 365 \
+          -newkey rsa:2048 \
+          -keyout /certs/nginx.key \
+          -out /certs/nginx.crt \
+          -subj '/CN=glpi.local';
+      fi;
+      echo 'Cert ready. Sleeping forever.';
+      sleep infinity
       "
     volumes:
       - nginx_certs:/certs
