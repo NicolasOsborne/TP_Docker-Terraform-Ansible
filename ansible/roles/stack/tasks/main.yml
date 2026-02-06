@@ -1,51 +1,18 @@
-- name: Copy Docker stack file
-  copy:
-    src: '{{ playbook_dir }}/../docker/docker-stack.yml'
-    dest: /tmp/docker-stack.yml
-
-- name: Create directory for Nginx config on manager
+- name: Create directories for config and certs
   file:
-    path: /tmp/docker/nginx/conf.d
+    path: '{{ item }}'
     state: directory
     mode: '0755'
+  loop:
+    - /tmp/docker/nginx/conf.d
+    - /tmp/docker/nginx/certs
 
-- name: Copy Nginx configuration file for Docker Swarm
+- name: Copy Nginx config
   copy:
     src: '{{ playbook_dir }}/../docker/nginx/conf.d/default.conf'
     dest: /tmp/docker/nginx/conf.d/default.conf
-    force: yes
 
-- name: Check if secret exists
-  command: docker secret ls --format '{{ "{{.Name}}" }}'
-  register: secret_list
-  changed_when: false
-
-- name: Create Docker secrets - DB password
-  shell: echo "glpi" | docker secret create db_password -
-  when: "'db_password' not in secret_list.stdout"
-
-- name: Create Docker secrets - Root DB password
-  shell: echo "root" | docker secret create db_root_password -
-  when: "'db_root_password' not in secret_list.stdout"
-
-- name: Remove existing stack if present
-  command: docker stack rm tp_devops
-  ignore_errors: yes
-
-- name: Wait for stack removal
-  shell: |
-    while docker stack ls | grep -q tp_devops; do
-      sleep 2
-    done
-  changed_when: false
-
-- name: Create directory for SSL certs
-  file:
-    path: /tmp/docker/nginx/certs
-    state: directory
-    mode: '0755'
-
-- name: Generate self-signed certificate (fallback for local dev)
+- name: Generate Self-Signed SSL Certs (Let's Encrypt Fallback)
   command: >
     openssl req -x509 -nodes -days 365
     -newkey rsa:2048
@@ -55,5 +22,13 @@
   args:
     creates: /tmp/docker/nginx/certs/fullchain.pem
 
-- name: Deploy stack
-  command: docker stack deploy -c /tmp/docker-stack.yml tp_devops
+- name: Create Docker secrets
+  shell: |
+    docker secret inspect {{ item.name }} >/dev/null 2>&1 || \
+    echo "{{ item.value }}" | docker secret create {{ item.name }} -
+  loop:
+    - { name: 'db_password', value: 'glpi' }
+    - { name: 'db_root_password', value: 'root' }
+
+- name: Deploy or Update Stack
+  command: docker stack deploy -c {{ playbook_dir }}/../docker/docker-stack.yml tp_devops
