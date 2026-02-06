@@ -122,6 +122,24 @@ Il vous suffit alors de simplement lancer le script de déploiement de la stack 
 sudo ./deploy.sh
 ```
 
+## Vérification du déploiement :
+
+Une fois le déploiement terminé, l'interface GLPI est accessible via :
+
+- http://localhost
+- Vous devriez voir une page "Attention connexion non-sécurisée", ce qui est normal puisqu'en environnement local, le certificat Let's Encrypt géré par Certbot ne peut pas être validé (il ne s'agit pas d'un nom de domaine public).
+- En environnement local, le certificat SSL est auto-signé.
+- Si vous passez outre le message (en cliquant sur "Avancé" puis "Accepter le risque"), l'URL devient alors bien https://localhost
+
+## Architecture Réseau
+
+Le flux de données est orchestré comme suit :
+
+1. **Nginx (Port 80/443)** : Reçoit les requêtes et force la redirection vers HTTPS.
+2. **Docker Swarm** : Répartit la charge sur les 3 réplicas Nginx.
+3. **GLPI** : Reçoit les requêtes transmises par Nginx via le réseau overlay `glpi-network`.
+4. **MariaDB** : Stocke les données de GLPI, accessible uniquement au sein du réseau privé.
+
 ## Commandes utiles :
 
 - **Voir les services :**
@@ -166,10 +184,9 @@ docker service ps tp_devops_nginx
 docker stack rm tp_devops
 ```
 
-- **Cleanup (tout supprimer) :**
+- **Cleanup (reset total) :**
 
 ```bash
-docker stack rm tp_devops
-terraform destroy -auto-approve
+sudo docker stack rm tp_devops
 docker secret rm db_password db_root_password
 ```
