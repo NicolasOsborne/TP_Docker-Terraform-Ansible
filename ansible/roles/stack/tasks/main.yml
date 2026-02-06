@@ -28,5 +28,16 @@
   shell: echo "root" | docker secret create db_root_password -
   when: "'db_root_password' not in secret_list.stdout"
 
+- name: Remove existing stack if present
+  command: docker stack rm tp_devops
+  ignore_errors: yes
+
+- name: Wait for stack removal
+  shell: |
+    while docker stack ls | grep -q tp_devops; do
+      sleep 2
+    done
+  changed_when: false
+
 - name: Deploy stack
   command: docker stack deploy -c /tmp/docker-stack.yml tp_devops

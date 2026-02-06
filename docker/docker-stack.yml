@@ -86,7 +86,7 @@ volumes:
   webroot:
 
 networks:
-  glpi_network:
+  glpi-network:
     external: true
 
 secrets:
