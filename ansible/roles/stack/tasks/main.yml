@@ -39,5 +39,21 @@
     done
   changed_when: false
 
+- name: Create directory for SSL certs
+  file:
+    path: /tmp/docker/nginx/certs
+    state: directory
+    mode: '0755'
+
+- name: Generate self-signed certificate (fallback for local dev)
+  command: >
+    openssl req -x509 -nodes -days 365
+    -newkey rsa:2048
+    -keyout /tmp/docker/nginx/certs/privkey.pem
+    -out /tmp/docker/nginx/certs/fullchain.pem
+    -subj "/CN=glpi.local"
+  args:
+    creates: /tmp/docker/nginx/certs/fullchain.pem
+
 - name: Deploy stack
   command: docker stack deploy -c /tmp/docker-stack.yml tp_devops
