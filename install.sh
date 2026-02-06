@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "--- PREPARE SYSTEM ---"
 sudo apt update
 

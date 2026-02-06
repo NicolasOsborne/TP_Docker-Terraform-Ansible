@@ -1,4 +1,4 @@
-- name: Create directories for config and certs
+- name: Create directories for config, certs and webroot
   file:
     path: '{{ item }}'
     state: directory
@@ -6,6 +6,7 @@
   loop:
     - /tmp/docker/nginx/conf.d
     - /tmp/docker/nginx/certs
+    - /tmp/docker/nginx/webroot
 
 - name: Copy Nginx config
   copy:
@@ -29,6 +30,7 @@
   loop:
     - { name: 'db_password', value: 'glpi' }
     - { name: 'db_root_password', value: 'root' }
+  no_log: true
 
 - name: Deploy or Update Stack
   command: docker stack deploy -c {{ playbook_dir }}/../docker/docker-stack.yml tp_devops
