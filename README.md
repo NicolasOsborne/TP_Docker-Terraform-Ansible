@@ -27,6 +27,43 @@ Le tout doit être déployé automatiquement via Terraform et configuré via Ans
 - Let's Encrypt
 - Maria DB
 
+## Structure et arborescence du projet :
+
+```
+TP_Docker-Terraform-Ansible/
+│
+├── .gitignore
+├── README.md
+├── deploy.sh
+├── install.sh
+│
+├── terraform/
+│   ├── main.tf
+│   ├── outputs.tf
+│   └── variables.tf
+│
+├── ansible/
+│   ├── inventory.ini (généré automatiquement par Terraform)
+│   ├── playbook.yml
+│   └── roles/
+│       ├── docker/
+│       │	└── tasks/
+│       │		└── main.yml
+│       ├── swarm/
+│       │	└── tasks/
+│       │		└── main.yml
+│       └── stack/
+│       	└── tasks/
+│       		└── main.yml
+│
+└── docker/
+    ├── docker-stack.yml
+    └── nginx/
+       	 └── conf.d/
+       	     └── default.conf
+
+```
+
 ## Mise en place et déploiement automatisé :
 
 ### Tout d'abord, clonez le dépôt :
