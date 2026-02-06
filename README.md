@@ -121,3 +121,55 @@ Il vous suffit alors de simplement lancer le script de déploiement de la stack 
 ```bash
 sudo ./deploy.sh
 ```
+
+## Commandes utiles :
+
+- **Voir les services :**
+
+```bash
+docker service ls
+```
+
+- **Voir l'état des services :**
+
+```bash
+docker stack services tp_devops
+```
+
+- **Voir les logs Nginx :**
+
+```bash
+docker service logs -f tp_devops_nginx
+```
+
+- **Voir les logs GLPI :**
+
+```bash
+docker service logs -f tp_devops_glpi
+```
+
+- **Voir les tasks :**
+
+```bash
+docker service ps tp_devops_nginx
+```
+
+- **Redéployer la stack :**
+
+```bash
+./deploy.sh
+```
+
+- **Stopper la stack :**
+
+```bash
+docker stack rm tp_devops
+```
+
+- **Cleanup (tout supprimer) :**
+
+```bash
+docker stack rm tp_devops
+terraform destroy -auto-approve
+docker secret rm db_password db_root_password
+```
