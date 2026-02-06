@@ -1,13 +1,18 @@
 terraform {
    required_providers {
+      docker = {
+         source  = "kreuzwerker/docker"
+         version = "~> 3.6.2"
+      }
       local = {
          source  = "hashicorp/local"
-         version = "~> 2.4"
       }
    }
 }
 
-provider "local" {}
+provider "docker" {
+   host = "unix:///var/run/docker.sock"
+}
 
 resource "local_file" "infra_ready" {
    filename = "${path.module}/${var.filename}"
@@ -16,9 +21,5 @@ resource "local_file" "infra_ready" {
 
 resource "local_file" "ansible_inventory" {
    filename = "${path.module}/${var.inventory_path}"
-
-   content = <<EOT
-[manager]
-localhost ansible_connection=local
-EOT
+   content  = "[manager]\nlocalhost ansible_connection=local"
 }

@@ -64,6 +64,15 @@ TP_Docker-Terraform-Ansible/
 
 ```
 
+## Architecture Réseau
+
+Le flux de données est orchestré comme suit :
+
+1. **Nginx (Port 80/443)** : Reçoit les requêtes et force la redirection vers HTTPS.
+2. **Docker Swarm** : Répartit la charge sur les 3 réplicas Nginx.
+3. **GLPI** : Reçoit les requêtes transmises par Nginx via le réseau overlay `glpi-network`.
+4. **MariaDB** : Stocke les données de GLPI, accessible uniquement au sein du réseau privé.
+
 ## Mise en place et déploiement automatisé :
 
 ### Tout d'abord, clonez le dépôt :
@@ -120,4 +129,66 @@ Il vous suffit alors de simplement lancer le script de déploiement de la stack 
 
 ```bash
 sudo ./deploy.sh
+```
+
+## Vérification du déploiement :
+
+Une fois le script de déploiement lancé, il peut se passer un laps de temps plus ou moins long (jusqu'à 30 secondes) jusqu'à ce que tous les services soient prêts et up.
+
+Une fois le déploiement terminé, et tous les services affichés, l'interface GLPI est accessible via :
+
+- http://localhost
+- Vous devriez voir une page "Attention connexion non-sécurisée", ce qui est normal puisqu'en environnement local, le certificat Let's Encrypt géré par Certbot ne peut pas être validé (il ne s'agit pas d'un nom de domaine public).
+- En environnement local, le certificat SSL est auto-signé.
+- Si vous passez outre le message (en cliquant sur "Avancé" puis "Accepter le risque"), l'URL devient alors bien https://localhost
+
+## Commandes utiles :
+
+- **Voir les services :**
+
+```bash
+sudo docker service ls
+```
+
+- **Voir l'état des services :**
+
+```bash
+sudo docker stack services tp_devops
+```
+
+- **Voir les logs Nginx :**
+
+```bash
+sudo docker service logs -f tp_devops_nginx
+```
+
+- **Voir les logs GLPI :**
+
+```bash
+sudo docker service logs -f tp_devops_glpi
+```
+
+- **Voir les tasks :**
+
+```bash
+sudo docker service ps tp_devops_nginx
+```
+
+- **Redéployer la stack :**
+
+```bash
+./deploy.sh
+```
+
+- **Stopper la stack :**
+
+```bash
+sudo docker stack rm tp_devops
+```
+
+- **Cleanup (reset total) :**
+
+```bash
+sudo docker stack rm tp_devops
+sudo docker secret rm db_password db_root_password
 ```
