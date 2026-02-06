@@ -14,12 +14,6 @@ provider "docker" {
    host = "unix:///var/run/docker.sock"
 }
 
-resource "docker_network" "glpi_network" {
-   name   = "glpi-network"
-   driver = "overlay"
-   attachable = true
-}
-
 resource "local_file" "infra_ready" {
    filename = "${path.module}/${var.filename}"
    content  = "Infrastructure ready for project ${var.project_name} by ${var.author_name}."

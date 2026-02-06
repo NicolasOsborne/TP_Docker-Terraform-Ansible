@@ -87,7 +87,8 @@ volumes:
 
 networks:
   glpi-network:
-    external: true
+    driver: overlay
+    attachable: true
 
 secrets:
   db_password:
