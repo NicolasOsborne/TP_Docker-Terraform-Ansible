@@ -16,7 +16,7 @@ ansible-playbook -i inventory.ini playbook.yml
 cd ..
 
 echo "--- WAITING FOR SERVICES TO START (this may take some time) ---"
-while [ "$(sudo docker stack services tp_devops | grep -E "nginx|db|glpi" | grep -c "0/")" -gt 0 ]; do
+while sudo docker stack services tp_devops | grep -E "nginx|db|glpi" | grep -qE "0/[1-3]"; do
    echo -n "."
    sleep 3
 done

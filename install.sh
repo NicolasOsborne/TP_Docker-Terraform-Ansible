@@ -36,4 +36,4 @@ echo "--- INSTALL ANSIBLE ---"
 sudo apt install -y ansible
 
 echo "--- INSTALLATIONS DONE ---"
-echo "To deploy the stack, run: ./deploy.sh"
+echo "To deploy the stack, run: sudo ./deploy.sh"
