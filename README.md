@@ -145,31 +145,31 @@ Le flux de données est orchestré comme suit :
 - **Voir les services :**
 
 ```bash
-docker service ls
+sudo docker service ls
 ```
 
 - **Voir l'état des services :**
 
 ```bash
-docker stack services tp_devops
+sudo docker stack services tp_devops
 ```
 
 - **Voir les logs Nginx :**
 
 ```bash
-docker service logs -f tp_devops_nginx
+sudo docker service logs -f tp_devops_nginx
 ```
 
 - **Voir les logs GLPI :**
 
 ```bash
-docker service logs -f tp_devops_glpi
+sudo docker service logs -f tp_devops_glpi
 ```
 
 - **Voir les tasks :**
 
 ```bash
-docker service ps tp_devops_nginx
+sudo docker service ps tp_devops_nginx
 ```
 
 - **Redéployer la stack :**
@@ -181,12 +181,12 @@ docker service ps tp_devops_nginx
 - **Stopper la stack :**
 
 ```bash
-docker stack rm tp_devops
+sudo docker stack rm tp_devops
 ```
 
 - **Cleanup (reset total) :**
 
 ```bash
 sudo docker stack rm tp_devops
-docker secret rm db_password db_root_password
+sudo docker secret rm db_password db_root_password
 ```
